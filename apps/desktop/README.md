@@ -1,4 +1,4 @@
-# Open DeepTutor for MacOS and Windows
+# Open DeepTutor for MacOS, Windows and Linux
 
 A double-clickable desktop app for DeepTutor. On first launch it installs its
 bundled runtime, starts the Python and Node services on loopback, and opens
@@ -17,13 +17,14 @@ requirements.
 | `macos-arm64` | Open DeepTutor for MacOS with Apple Silicon   | MacOS (Apple Silicon)   | `Open-DeepTutor-MacOS-Apple-Silicon-v<version>.dmg`        |
 | `macos-x64`   | Open DeepTutor for MacOS with Intel Silicon   | MacOS (Intel)           | `Open-DeepTutor-MacOS-Intel-v<version>.dmg`                |
 | `windows-x64` | Open DeepTutor for Windows                    | Windows                 | `Open-DeepTutor-Windows-v<version>-Setup.exe`, `…-Portable.zip` |
+| `linux-x64`   | Open DeepTutor for Linux                      | Linux                   | `Open-DeepTutor-Linux-x64-v<version>-Portable.tar.gz` (CI preview) |
 
 - The app version is the DeepTutor version it bundles, read from
   `deeptutor/__version__.py` via the sealed runtime, so `package.json` stays at
   `0.0.0`. The start screen and About show the full name with the version;
   the web UI's sidebar uses the short name, and Settings → About shows both.
   The web UI recognises the app by the `OpenDeepTutor/<version> (macOS; arm64)`
-  user-agent marker (`(macOS; x64)`, `(Windows; x64)`); names live in
+  user-agent marker (`(macOS; x64)`, `(Windows; x64)`, `(Linux; x64)`); names live in
   `src/platform.mjs` and `web/lib/version.ts`.
 - The shell (start screen, menus, dialogs) starts in English and then follows
   the interface language and theme chosen in DeepTutor's Settings
@@ -34,13 +35,14 @@ requirements.
 
 ```
 src/                  the shell, shared by every platform
-  platform.mjs        every run-time difference between MacOS and Windows
+  platform.mjs        every platform-specific run-time difference
 scripts/              build-runtime, seal-runtime, smoke, package (all take --target)
   lib/                target loading, app staging, MacOS packaging
 platforms/
   macos-arm64/        target.mjs (Python/Node builds) + package.mjs (DMG)
   macos-x64/          target.mjs + package.mjs (DMG)
   windows-x64/        target.mjs + package.mjs (zip) + installer.nsi (Setup.exe)
+  linux-x64/          target.mjs + package.mjs (portable tar.gz)
 ```
 
 Every build file of a target goes to `.local/<target>/`; downloads go to `out/`.
@@ -70,7 +72,15 @@ desktop IPC privileges; only the private shell page owns the native bridge.
 
 Prerequisites (developers only): Node/npm and `uv`. MacOS targets build on a
 Mac (`macos-x64` also on Apple Silicon, through Rosetta); `windows-x64` builds
-on Windows 10+ with NSIS (`makensis`) installed.
+on Windows 10+ with NSIS (`makensis`) installed. `linux-x64` builds natively
+on x86-64 Linux with glibc (CI uses Ubuntu 22.04), using the same scripts.
+
+Linux preview artifacts are portable directories: extract the tarball and
+launch `Open DeepTutor` in the extracted folder. A graphical desktop and the
+Electron runtime system libraries are required; this is not a headless or
+Alpine/musl package. The Chromium sandbox stays enabled. Linux uses a native
+title/menu bar and stores its data under
+`${XDG_CONFIG_HOME:-~/.config}/Open DeepTutor/workspace/data`.
 
 ```sh
 cd apps/desktop
@@ -115,9 +125,22 @@ published. For each target it verifies the tag matches
 `deeptutor/__version__.py`, builds and smoke-tests the runtime, packages the
 app and attaches the downloads to the release. It needs the
 `DESKTOP_RUNTIME_SIGNING_KEY` secret; Developer ID signing and notarization run
-when the Apple secrets listed in the workflow are present. Pull requests that
-touch `apps/desktop` run the same builds with a throwaway key and keep the
-downloads as workflow artifacts instead of publishing them.
+when the Apple secrets listed in the workflow are present. Linux previews
+are not added to this signed release workflow.
+
+`.github/workflows/desktop-build.yml` validates all four targets on native
+runners on relevant pushes, pull requests to `dev`, and manual dispatch. It
+covers changes to the bundled frontend, Python core and dependencies as well
+as the shell. Each job checks the shell, builds the production runtime with a
+disposable key, boots it using the existing smoke test, and packages the client.
+Windows also runs the installer lifecycle smoke test. The Linux/macOS runtime
+smoke tests do not establish that the packaged Electron GUI works on every
+desktop environment; manually launch the downloaded app before release.
+
+Validation requires only a read-only repository token and no release secrets.
+Downloads and smoke logs are kept as `desktop-validation-<target>` artifacts
+for seven days. These unsigned/ad-hoc-signed previews are for testing, not
+release updates, and should use an independent `OPEN_DEEPTUTOR_TEST_HOME`.
 
 Pushes to `dev` that change the desktop app also build all three targets with
 the configured runtime key and Apple signing credentials, keeping the results

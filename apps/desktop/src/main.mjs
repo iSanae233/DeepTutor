@@ -7,7 +7,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { installBundle, bundleConfig, verifyManifest } from './bundles.mjs';
 import { externalURL } from './config.mjs';
 import { resolveLanguage, translate } from './i18n.mjs';
-import { WINDOWS, agentMarker, edition, targetId } from './platform.mjs';
+import { WINDOWS, MACOS, agentMarker, edition, targetId } from './platform.mjs';
 import { killTree } from './processes.mjs';
 
 app.setName('Open DeepTutor');
@@ -27,8 +27,8 @@ const transactionFile = path.join(userRoot, 'upgrade.json');
 const interfaceFile = path.join(runtimeHome, 'data/user/settings/interface.json');
 const seed = app.isPackaged ? path.join(process.resourcesPath, 'seed/runtime.json') : path.join(sourceDirectory, '../.local', targetId(), 'seed/runtime.json');
 const publicKey = await readFile(path.join(sourceDirectory, '../assets/runtime-public.pem'), 'utf8');
-// macOS draws the shell's own title bar under the traffic lights; Windows keeps its native frame and menu bar.
-const HEADER_HEIGHT = WINDOWS ? 0 : 44;
+// Only macOS draws a custom title bar under the traffic lights.
+const HEADER_HEIGHT = MACOS ? 44 : 0;
 const BACKGROUND = { light: '#ffffff', dark: '#161618' };
 let window;
 let view;
@@ -290,7 +290,7 @@ function buildMenu() {
     detail: t('aboutDetail', { core: active?.manifest.coreVersion ?? '—', runtime: active?.manifest.runtimeId ?? '—' }),
   }) };
   Menu.setApplicationMenu(Menu.buildFromTemplate([
-    { label: 'Open DeepTutor', submenu: WINDOWS ? [about, { type: 'separator' }, { role: 'quit', label: t('quit') }] : [
+    { label: 'Open DeepTutor', submenu: !MACOS ? [about, { type: 'separator' }, { role: 'quit', label: t('quit') }] : [
       about,
       { type: 'separator' },
       { role: 'hide', label: t('hide') }, { role: 'hideOthers', label: t('hideOthers') }, { role: 'unhide', label: t('showAll') },
@@ -320,7 +320,7 @@ function buildMenu() {
       { label: t('openData'), click: () => void shell.openPath(runtimeHome) },
       { label: t('openLogs'), click: () => void shell.openPath(path.dirname(logPath)) },
     ] },
-    { role: 'windowMenu', label: t('window'), submenu: WINDOWS ? [{ role: 'minimize', label: t('minimize') }] : [
+    { role: 'windowMenu', label: t('window'), submenu: !MACOS ? [{ role: 'minimize', label: t('minimize') }] : [
       { role: 'minimize', label: t('minimize') }, { role: 'zoom', label: t('zoom') },
       { type: 'separator' }, { role: 'front', label: t('front') },
     ] },
@@ -357,7 +357,7 @@ else {
   window = new BrowserWindow({
     title: 'Open DeepTutor', width: 1360, height: 920, minWidth: 900, minHeight: 620,
     backgroundColor: BACKGROUND[ui.theme],
-    ...(WINDOWS ? {} : { titleBarStyle: 'hiddenInset', trafficLightPosition: { x: 18, y: 16 } }),
+    ...(MACOS ? { titleBarStyle: 'hiddenInset', trafficLightPosition: { x: 18, y: 16 } } : {}),
     webPreferences: { preload: path.join(sourceDirectory, 'preload.cjs'), contextIsolation: true, sandbox: true, nodeIntegration: false },
   });
   window.webContents.on('will-navigate', event => event.preventDefault());

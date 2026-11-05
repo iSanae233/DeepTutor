@@ -5,8 +5,7 @@ name: Desktop Release
 # pypi-release.yml publishes. Each platform's build lives in
 # apps/desktop/platforms/<target>/.
 #
-# Pull requests that touch apps/desktop build and smoke-test all three without
-# publishing; they keep the downloads as workflow artifacts for 7 days.
+# Pull request validation lives in desktop-build.yml, including Linux.
 # Pushes to dev and manual validation runs exercise configured signing without
 # publishing. Pull requests always use disposable runtime signing keys.
 #
@@ -29,10 +28,6 @@ on:
       - .github/workflows/desktop-release.yml
   release:
     types: [published]
-  pull_request:
-    paths:
-      - apps/desktop/**
-      - .github/workflows/desktop-release.yml
   workflow_dispatch:
     inputs:
       tag:

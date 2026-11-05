@@ -19,7 +19,7 @@ test('the user agent marker carries platform and architecture for the web UI', (
 test('every platform folder is a known target with a runtime layout', async () => {
   const folders = (await readdir(new URL('../platforms', import.meta.url), { withFileTypes: true }))
     .filter(entry => entry.isDirectory()).map(entry => entry.name).sort();
-  assert.deepEqual(folders, ['macos-arm64', 'macos-x64', 'windows-x64']);
+  assert.deepEqual(folders, ['linux-x64', 'macos-arm64', 'macos-x64', 'windows-x64']);
   for (const folder of folders) {
     const { default: target } = await import(`../platforms/${folder}/target.mjs`);
     assert.equal(targetId(target.platform, target.arch), folder);

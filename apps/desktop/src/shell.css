@@ -35,7 +35,8 @@ body {
 .titlebar-name img { width: 14px; height: 14px; }
 :root[data-phase="ready"] .titlebar { border-bottom-color: var(--line); }
 /* Windows keeps its native title bar, so the shell draws none. */
-:root[data-platform="win32"] .titlebar { display: none; }
+:root[data-platform="win32"] .titlebar,
+:root[data-platform="linux"] .titlebar { display: none; }
 :root[data-phase="ready"] .titlebar-name { opacity: .88; }
 
 .stage {

@@ -11,7 +11,7 @@ import { appRoot, loadTarget } from './lib/target.mjs';
 // Finder and Spotlight may write .DS_Store into a folder while it is being removed.
 const clear = folder => rm(folder, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 });
 
-// Usage: node scripts/build-runtime.mjs [--target macos-arm64|macos-x64|windows-x64] [--assemble] [--new-key]
+// Usage: node scripts/build-runtime.mjs [--target macos-arm64|macos-x64|windows-x64|linux-x64] [--assemble] [--new-key]
 const target = await loadTarget();
 const WINDOWS = target.platform === 'win32';
 // Builds from the committed HEAD of the DeepTutor checkout this app lives in.

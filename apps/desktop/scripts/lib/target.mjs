@@ -16,7 +16,7 @@ export async function loadTarget(argv = process.argv) {
   const known = (await readdir(platforms, { withFileTypes: true })).filter(entry => entry.isDirectory()).map(entry => entry.name);
   if (!known.includes(id)) throw new Error(`Unknown target ${id}; expected one of ${known.join(', ')}`);
   const target = (await import(pathToFileURL(path.join(platforms, id, 'target.mjs')).href)).default;
-  if (target.platform !== process.platform) throw new Error(`${id} must be built on ${target.platform === 'win32' ? 'Windows' : 'macOS'}`);
+  if (target.platform !== process.platform) throw new Error(`${id} must be built on ${target.platform}`);
   // Apple Silicon runs the x64 toolchain through Rosetta; nothing runs arm64 code on Intel.
   const rosetta = target.platform === 'darwin' && target.arch === 'x64' && process.arch === 'arm64';
   if (target.arch !== process.arch && !rosetta) throw new Error(`${id} cannot be built on ${targetId()}`);

@@ -1,0 +1,114 @@
+name: Desktop Build
+
+# Validation only: no release credentials, signing identity, or publication.
+on:
+  push:
+    paths:
+      - apps/desktop/**
+      - web/**
+      - deeptutor/**
+      - deeptutor_cli/**
+      - assets/**
+      - scripts/**
+      - requirements/**
+      - pyproject.toml
+      - build_metadata.py
+      - build_support.py
+      - setup.py
+      - .github/workflows/desktop-build.yml
+  pull_request:
+    branches: [dev]
+    paths:
+      - apps/desktop/**
+      - web/**
+      - deeptutor/**
+      - deeptutor_cli/**
+      - assets/**
+      - scripts/**
+      - requirements/**
+      - pyproject.toml
+      - build_metadata.py
+      - build_support.py
+      - setup.py
+      - .github/workflows/desktop-build.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: desktop-build-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: ${{ matrix.target }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: macos-arm64
+            runner: macos-15
+          - target: macos-x64
+            runner: macos-15-intel
+          - target: windows-x64
+            runner: windows-2025
+          - target: linux-x64
+            runner: ubuntu-22.04
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 120
+    defaults:
+      run:
+        shell: bash
+        working-directory: apps/desktop
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: |
+            apps/desktop/package-lock.json
+            web/package-lock.json
+
+      - uses: astral-sh/setup-uv@v6
+
+      - name: Install the Windows installer toolchain
+        if: runner.os == 'Windows'
+        run: choco install nsis --yes --no-progress
+
+      - name: Check and test the shell
+        run: npm ci && npm run check && npm test
+
+      - name: Build with a disposable runtime key
+        run: npm run build:runtime -- --target ${{ matrix.target }} --new-key
+
+      - name: Boot the bundled runtime
+        run: npm run smoke -- --target ${{ matrix.target }}
+
+      - name: Package the client
+        run: npm run package -- --target ${{ matrix.target }}
+
+      - name: Verify Windows installation and app lifecycle
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: ./platforms/windows-x64/smoke-installer.ps1
+
+      - name: Keep validation builds and logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: desktop-validation-${{ matrix.target }}
+          retention-days: 7
+          compression-level: 0
+          path: |
+            apps/desktop/out/*.dmg
+            apps/desktop/out/*-Setup.exe
+            apps/desktop/out/*-Portable.zip
+            apps/desktop/out/*-Portable.tar.gz
+            apps/desktop/.local/${{ matrix.target }}/smoke.log
+            apps/desktop/.local/${{ matrix.target }}/smoke-result.json
+            apps/desktop/.local/${{ matrix.target }}/installed-app.log
