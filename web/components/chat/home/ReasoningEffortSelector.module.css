@@ -7,7 +7,7 @@
 }
 
 .track::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0 auto 0 0;
   width: var(--effort-progress);
@@ -87,9 +87,48 @@
   background: transparent;
 }
 
+.track[data-dragging='true']::before,
+.track[data-dragging='true'] .thumb {
+  transition: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .panel,
+  .label {
+    animation: none;
+  }
+
   .track::before,
   .thumb {
     transition: none;
+  }
+}
+.panel {
+  transform-origin: bottom right;
+  animation: reveal 140ms ease-out;
+}
+
+.label {
+  display: inline-block;
+  animation: fade 140ms ease-out;
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(3px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
   }
 }
