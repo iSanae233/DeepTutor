@@ -159,6 +159,19 @@ subject to the provider's supported list. Unknown fields, literal `api_key`
 fields, and credentials in URLs are rejected. Advanced settings and other
 service types remain available in Web Settings.
 
+In **Models and services → Language models**, **Enabled reasoning efforts**
+controls the levels offered by the Chat slider. **Test model** refreshes the
+supported levels in the settings draft, without replacing the user's enabled
+levels; Apply saves them. Detection prefers provider/account metadata, then
+built-in model rules. An unknown result preserves existing choices, and a
+successful connection test does not prove that every level works.
+
+The Chat slider writes a per-conversation override only after the user selects
+an effort. Opening Chat preserves the implicit default model and inherited
+reasoning configuration. When no concrete level is configured, the control
+shows Auto. Reset clears the conversation's effort override and restores the
+model/provider configuration without changing the selected model.
+
 For knowledge bases/RAG, also configure an accessible embedding model. For example:
 
 ```json

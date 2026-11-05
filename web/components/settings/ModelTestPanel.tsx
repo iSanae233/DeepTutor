@@ -125,6 +125,13 @@ export function ModelTestPanel({
                 {result.response}
               </p>
             )}
+            {result.reasoning && (
+              <p className="text-xs text-[var(--muted-foreground)]">
+                {result.reasoning.source === 'unknown'
+                  ? t('Reasoning levels could not be detected; existing choices were kept.')
+                  : t('Available reasoning levels: {{levels}}', { levels: result.reasoning.levels.join(', ') || t('None') })}
+              </p>
+            )}
             {(context || dimension) && (
               <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-[var(--background)] p-3 text-xs">
                 <div>

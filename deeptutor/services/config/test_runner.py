@@ -269,6 +269,16 @@ class ConfigTestRunner:
         run.emit("response", "Received LLM response.", snippet=snippet[:400])
         if not snippet:
             raise ValueError("LLM returned an empty response.")
+        from .reasoning_detection import detect_reasoning_efforts
+
+        model = get_model_catalog_service().get_active_model(catalog, run.service) or {}
+        levels, source = await detect_reasoning_efforts(llm_config, model)
+        run.emit(
+            "reasoning_efforts",
+            f"Reasoning choices ({source}): {', '.join(levels) or 'unknown'}.",
+            supported_reasoning_efforts=levels,
+            source=source,
+        )
         run.emit(
             "info",
             (

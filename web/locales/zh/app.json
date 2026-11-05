@@ -5430,7 +5430,7 @@
   "settings.providerServices.customHint": "自有地址与支持的接口协议",
   "settings.providerServices.noMatch": "没有匹配的提供方，请换个分类或使用自定义接入。",
   "settings.providerServices.name": "提供方名称",
-  "settings.providerServices.customDescription": "此地址需要实现所选协议。下一步填写凭据，并按需增加其他服务类型及其适配器。",
+  "settings.providerServices.customDescription": "接口协议默认为自动。下一步填写凭据，按需修改协议，并增加其他服务类型及其适配器。",
   "settings.providerServices.addHint": "标签表示已有内置适配器，不代表账号权限。同一连接可以用于多类模型，不同账号或独立产品也可以分别添加。",
   "settings.providerServices.catalogListed": "已获取模型列表。请测试具体模型，确认账号的实际调用权限。",
   "settings.providerServices.partial": "本次仅获取到部分模型列表。未返回的类型仍视为未知，可手动补充。",
@@ -6406,5 +6406,13 @@
   "Reset learning text": "重置学习文字",
   "language.portuguese": "葡萄牙语",
   "language.japanese": "日语",
-  "language.turkish": "Türkçe"
+  "language.turkish": "Türkçe",
+  "Applies to the next message in this conversation.": "从当前对话的下一条消息起生效。",
+  "Enabled reasoning efforts": "启用的推理强度",
+  "Choose the reasoning levels available in Chat. Testing refreshes supported levels without replacing your choices.": "勾选 Chat 中可选择的推理强度。测试会更新支持的档位，并保留你的勾选。",
+  "No reasoning levels are known for this model. Test the model to check provider metadata.": "尚不清楚此模型支持的推理档位。请测试模型以查询提供方的能力信息。",
+  "Reasoning levels from built-in model rules; not individually tested.": "推理档位来自内置模型规则，未逐档测试。",
+  "Reasoning levels from provider metadata; not individually tested.": "推理档位来自提供方能力信息，未逐档测试。",
+  "Reasoning levels could not be detected; existing choices were kept.": "未能检测推理档位，已保留原有选择。",
+  "Available reasoning levels: {{levels}}": "可用推理档位：{{levels}}"
 }

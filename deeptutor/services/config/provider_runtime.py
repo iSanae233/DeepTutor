@@ -953,6 +953,21 @@ def resolve_llm_runtime_config(
     # resolved above. The model/global config value stays the fallback when
     # no override is present, preserving today's behavior.
     if selection is not None and selection.reasoning_effort:
+        from deeptutor.services.model_selection.reasoning import enabled_reasoning_efforts
+
+        enabled = enabled_reasoning_efforts(binding_hint, resolved_model, metadata=model)
+        # Legacy unknown/custom models accepted explicit overrides. Preserve
+        # that behavior until choices are declared or known for this model.
+        constrained = bool(enabled) or any(
+            key in (model or {})
+            for key in (
+                "enabled_reasoning_efforts",
+                "supported_reasoning_efforts",
+                "codex_supported_reasoning_levels",
+            )
+        )
+        if constrained and selection.reasoning_effort not in enabled:
+            raise ValueError("The selected reasoning effort is not enabled for this model.")
         reasoning_effort = selection.reasoning_effort
     active_extra_headers = _to_headers((profile or {}).get("extra_headers"))
     context_window = _coerce_optional_int((model or {}).get("context_window"))

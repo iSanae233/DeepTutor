@@ -5356,7 +5356,7 @@
   "settings.providerServices.customHint": "Eigene URL und unterstütztes API-Protokoll",
   "settings.providerServices.noMatch": "Keine passenden Anbieter. Wähle eine andere Kategorie oder eine eigene Verbindung.",
   "settings.providerServices.name": "Anbietername",
-  "settings.providerServices.customDescription": "Die URL muss die gewählte API implementieren. Ergänze danach Zugangsdaten und weitere Diensttypen mit ihren Adaptern.",
+  "settings.providerServices.customDescription": "Das API-Protokoll ist zunächst auf Auto eingestellt. Fügen Sie im nächsten Schritt Zugangsdaten hinzu, ändern Sie bei Bedarf das Protokoll und wählen Sie weitere Diensttypen und Adapter.",
   "settings.providerServices.addHint": "Tags zeigen Integrationen, keine Kontoberechtigungen. Eine Verbindung kann mehrere Modelltypen bedienen; Konten und Produkte können getrennte Verbindungen nutzen.",
   "settings.providerServices.catalogListed": "Modellliste geladen. Teste ein Modell, um den Zugriff auf die Inferenz zu prüfen.",
   "settings.providerServices.partial": "Nur ein Teil der Modellliste wurde geladen. Fehlende Typen bleiben unbekannt und können manuell ergänzt werden.",
@@ -6406,5 +6406,13 @@
   "Availability refreshed. This parser is still unavailable; check the installation and startup logs, then retry.": "Verfügbarkeit aktualisiert. Dieser Parser ist weiterhin nicht verfügbar; prüfe Installation und Startprotokolle und versuche es erneut.",
   "language.portuguese": "Portugiesisch",
   "language.japanese": "Japanisch",
-  "language.turkish": "Türkçe"
+  "language.turkish": "Türkçe",
+  "Applies to the next message in this conversation.": "Gilt ab der nächsten Nachricht in dieser Unterhaltung.",
+  "Enabled reasoning efforts": "Aktivierte Denkstufen",
+  "Choose the reasoning levels available in Chat. Testing refreshes supported levels without replacing your choices.": "Wählen Sie die im Chat verfügbaren Denkstufen. Tests aktualisieren die unterstützten Stufen, ohne Ihre Auswahl zu ersetzen.",
+  "No reasoning levels are known for this model. Test the model to check provider metadata.": "Für dieses Modell sind keine Denkstufen bekannt. Testen Sie das Modell, um die Anbietermetadaten abzufragen.",
+  "Reasoning levels from built-in model rules; not individually tested.": "Denkstufen aus integrierten Modellregeln; nicht einzeln getestet.",
+  "Reasoning levels from provider metadata; not individually tested.": "Denkstufen aus Anbietermetadaten; nicht einzeln getestet.",
+  "Reasoning levels could not be detected; existing choices were kept.": "Denkstufen konnten nicht erkannt werden; bisherige Auswahl beibehalten.",
+  "Available reasoning levels: {{levels}}": "Verfügbare Denkstufen: {{levels}}"
 }

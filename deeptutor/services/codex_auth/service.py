@@ -308,6 +308,18 @@ def reconcile_codex_catalog_update(
         slug = model.get("model")
         supported = _managed_reasoning_levels(model)
         model["codex_supported_reasoning_levels"] = supported
+        if same_bound_account and isinstance(proposed_profile, Mapping):
+            proposed_model = next(
+                (
+                    m
+                    for m in proposed_profile.get("models", [])
+                    if isinstance(m, dict) and m.get("id") == model.get("id")
+                ),
+                {},
+            )
+            enabled = proposed_model.get("enabled_reasoning_efforts")
+            if isinstance(enabled, list):
+                model["enabled_reasoning_efforts"] = [v for v in supported if v in enabled]
         effort = requested.get(slug) if isinstance(slug, str) else None
         if effort in supported:
             model["reasoning_effort"] = effort
@@ -371,6 +383,19 @@ def sync_codex_catalog(
                 if isinstance(m, dict)
             }
             for model in profile["models"]:
+                previous = next(
+                    (
+                        m
+                        for m in existing_profile.get("models", [])
+                        if isinstance(m, dict) and m.get("id") == model["id"]
+                    ),
+                    {},
+                )
+                enabled = previous.get("enabled_reasoning_efforts")
+                if isinstance(enabled, list):
+                    model["enabled_reasoning_efforts"] = [
+                        v for v in _managed_reasoning_levels(model) if v in enabled
+                    ]
                 label = names.get(model["id"])
                 if isinstance(label, str) and label.strip():
                     model["name"] = model["user_name"] = label.strip()

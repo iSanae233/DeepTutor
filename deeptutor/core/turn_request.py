@@ -29,6 +29,9 @@ class LLMSelection(BaseModel):
 
     profile_id: str
     model_id: str
+    reasoning_effort: (
+        Literal["none", "minimal", "low", "medium", "high", "xhigh", "max", "adaptive"] | None
+    ) = None
 
 
 class OutgoingAttachment(BaseModel):

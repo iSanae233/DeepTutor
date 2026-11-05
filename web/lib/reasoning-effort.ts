@@ -199,6 +199,10 @@ function tableReasoningEffortOptions(
   }
 
   if (OPENAI_PROVIDERS.has(provider)) {
+    // https://developers.openai.com/api/docs/models/gpt-6.1-sol
+    if (modelName === "gpt-6.1-sol" || modelName.startsWith("gpt-6.1-sol-20")) {
+      return options(["low", "medium", "high", "xhigh", "max"], current);
+    }
     // gpt-5.6-sol does not share the gpt-5 enum: it takes `none` at the bottom
     // instead of `minimal`, and adds `max` above `xhigh`. It has to be matched
     // before the generic branch, and the two lists stay separate because the

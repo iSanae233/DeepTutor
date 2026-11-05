@@ -2234,6 +2234,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
         runModelId,
       );
       let finished = false;
+      let detectedReasoning: ModelTestState["reasoning"];
       testBusyRef.current = true;
       setTestRunning(service);
       setLogs("");
@@ -2306,6 +2307,13 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
             }));
             if (entry.type === "response" && entry.snippet)
               update({ response: entry.snippet });
+            if (entry.type === "reasoning_efforts" && Array.isArray(entry.supported_reasoning_efforts)) {
+              detectedReasoning = {
+                levels: entry.supported_reasoning_efforts.filter((level: unknown): level is string => typeof level === "string"),
+                source: entry.source || "unknown",
+              };
+              update({ reasoning: detectedReasoning });
+            }
             if (
               entry.type === "context_window" &&
               Number(entry.context_window) > 0
@@ -2334,9 +2342,22 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
               });
               setEmbeddingCapabilities(entry);
             }
-            // A probe never replaces the catalog or the user's in-progress edits.
-            // Metadata is offered to the addressed model for explicit adoption.
-            if (entry.type === "completed") finish("success", entry.message);
+            // Only capability metadata is refreshed in the matching draft.
+            // Context/dimensions still require adoption; enabled levels stay intact.
+            if (entry.type === "completed") {
+              const detected = detectedReasoning;
+              if (detected && detected.source !== "unknown") {
+                mutateCatalog((next) => {
+                  if (fingerprint !== modelTestFingerprint(next, service, profile.id, runModelId)) return;
+                  const model = next.services[service].profiles.find((item) => item.id === profile.id)
+                    ?.models.find((item) => item.id === runModelId);
+                  if (!model || model.managed_by) return;
+                  model.supported_reasoning_efforts = detected.levels;
+                  model.reasoning_efforts_source = detected.source;
+                });
+              }
+              finish("success", entry.message);
+            }
             if (entry.type === "failed") finish("failed", entry.message);
           } catch {
             finish("failed", t("Could not read the model test result."));
@@ -2353,7 +2374,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
         );
       }
     },
-    [catalogEditable, draft, t],
+    [catalogEditable, draft, mutateCatalog, t],
   );
 
   // ── Tour ────────────────────────────────────────────────────────────────

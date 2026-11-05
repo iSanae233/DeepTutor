@@ -19,6 +19,7 @@ from typing import Any
 from deeptutor.services.config.model_catalog import ModelCatalogService
 from deeptutor.services.config.provider_links import resolve_profile_provider
 from deeptutor.services.model_selection import list_llm_options
+from deeptutor.services.model_selection.reasoning import enabled_reasoning_efforts
 
 from .context import get_current_user
 from .grants import load_grant
@@ -111,8 +112,10 @@ def redacted_model_access(user_id: str | None = None) -> dict[str, list[dict[str
                     "provider": effective.get("binding") or "",
                     "profile_name": effective.get("name") or profile_id,
                     "reasoning_effort": (model or {}).get("reasoning_effort"),
-                    "supported_reasoning_efforts": (model or {}).get(
-                        "codex_supported_reasoning_levels"
+                    "supported_reasoning_efforts": enabled_reasoning_efforts(
+                        effective.get("binding") or "",
+                        (model or {}).get("model") or "",
+                        metadata=model,
                     ),
                     **{
                         f"declared_{key}": value
