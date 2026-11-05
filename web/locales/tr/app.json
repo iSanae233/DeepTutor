@@ -6406,5 +6406,13 @@
   "Learning text preview": "Öğrenme metni önizlemesi",
   "Reset learning text": "Öğrenme metnini sıfırla",
   "language.portuguese": "Português",
-  "language.japanese": "日本語"
+  "language.japanese": "日本語",
+  "Applies to the next message in this conversation.": "Bu konuşmadaki sonraki mesajdan itibaren uygulanır.",
+  "Enabled reasoning efforts": "Etkin akıl yürütme düzeyleri",
+  "Choose the reasoning levels available in Chat. Testing refreshes supported levels without replacing your choices.": "Chat içinde kullanılabilecek düzeyleri seçin. Test, seçimlerinizi değiştirmeden desteklenen düzeyleri günceller.",
+  "No reasoning levels are known for this model. Test the model to check provider metadata.": "Bu model için bilinen düzey yok. Sağlayıcı meta verilerini kontrol etmek için modeli test edin.",
+  "Reasoning levels from built-in model rules; not individually tested.": "Yerleşik model kurallarından alınan düzeyler; ayrı ayrı test edilmedi.",
+  "Reasoning levels from provider metadata; not individually tested.": "Sağlayıcı meta verilerinden alınan düzeyler; ayrı ayrı test edilmedi.",
+  "Reasoning levels could not be detected; existing choices were kept.": "Düzeyler tespit edilemedi; mevcut seçimler korundu.",
+  "Available reasoning levels: {{levels}}": "Kullanılabilir düzeyler: {{levels}}"
 }

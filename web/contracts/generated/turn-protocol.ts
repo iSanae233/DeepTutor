@@ -43,6 +43,18 @@ export type KnowledgeBases = string[];
 export type Language = string | null;
 export type ModelId = string;
 export type ProfileId = string;
+export type ReasoningEffort =
+  | (
+      | "none"
+      | "minimal"
+      | "low"
+      | "medium"
+      | "high"
+      | "xhigh"
+      | "max"
+      | "adaptive"
+    )
+  | null;
 export type Answers = {
   [k: string]: string;
 } | null;
@@ -368,6 +380,7 @@ export interface Config {
 export interface LLMSelection {
   model_id: ModelId;
   profile_id: ProfileId;
+  reasoning_effort?: ReasoningEffort;
 }
 /**
  * An answer submitted from a mastery question card.

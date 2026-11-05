@@ -6424,5 +6424,13 @@
   "Learning text preview": "Prévia do texto de aprendizado",
   "Reset learning text": "Redefinir texto de aprendizado",
   "language.japanese": "日本語",
-  "language.turkish": "Türkçe"
+  "language.turkish": "Türkçe",
+  "Applies to the next message in this conversation.": "Aplica-se à próxima mensagem nesta conversa.",
+  "Enabled reasoning efforts": "Níveis de raciocínio ativados",
+  "Choose the reasoning levels available in Chat. Testing refreshes supported levels without replacing your choices.": "Escolha os níveis disponíveis no Chat. O teste atualiza os níveis suportados sem substituir suas escolhas.",
+  "No reasoning levels are known for this model. Test the model to check provider metadata.": "Nenhum nível conhecido para este modelo. Teste o modelo para consultar os metadados do provedor.",
+  "Reasoning levels from built-in model rules; not individually tested.": "Níveis das regras integradas do modelo; não testados individualmente.",
+  "Reasoning levels from provider metadata; not individually tested.": "Níveis dos metadados do provedor; não testados individualmente.",
+  "Reasoning levels could not be detected; existing choices were kept.": "Não foi possível detectar os níveis; escolhas existentes mantidas.",
+  "Available reasoning levels: {{levels}}": "Níveis disponíveis: {{levels}}"
 }

@@ -24,6 +24,7 @@ VALID_REASONING_EFFORTS: tuple[str, ...] = (
     "high",
     "xhigh",
     "max",
+    "adaptive",
 )
 
 
@@ -150,11 +151,11 @@ def list_llm_options(catalog: dict[str, Any]) -> dict[str, Any]:
             reasoning_effort = str(model.get("reasoning_effort") or "").strip().lower()
             if reasoning_effort:
                 option["reasoning_effort"] = reasoning_effort
-            supported_levels = model.get("codex_supported_reasoning_levels")
-            if isinstance(supported_levels, list):
-                option["supported_reasoning_efforts"] = [
-                    str(level).strip().lower() for level in supported_levels if str(level).strip()
-                ]
+            from .reasoning import enabled_reasoning_efforts
+
+            option["supported_reasoning_efforts"] = enabled_reasoning_efforts(
+                model_provider, model_value, metadata=model
+            )
             declared = model.get("capabilities") or {}
             for capability in ("reasoning", "vision"):
                 if type(declared.get(capability)) is bool:

@@ -6428,5 +6428,13 @@
   "Availability refreshed. This parser is still unavailable; check the installation and startup logs, then retry.": "Dostępność odświeżona. Ten parser nadal jest niedostępny; sprawdź instalację i dzienniki uruchamiania, a następnie ponów próbę.",
   "language.portuguese": "Portugalski",
   "language.japanese": "Japoński",
-  "language.turkish": "Türkçe"
+  "language.turkish": "Türkçe",
+  "Applies to the next message in this conversation.": "Dotyczy następnej wiadomości w tej rozmowie.",
+  "Enabled reasoning efforts": "Włączone poziomy rozumowania",
+  "Choose the reasoning levels available in Chat. Testing refreshes supported levels without replacing your choices.": "Wybierz poziomy dostępne w czacie. Test aktualizuje obsługiwane poziomy bez zastępowania Twoich wyborów.",
+  "No reasoning levels are known for this model. Test the model to check provider metadata.": "Brak znanych poziomów dla tego modelu. Przetestuj model, aby sprawdzić metadane dostawcy.",
+  "Reasoning levels from built-in model rules; not individually tested.": "Poziomy z wbudowanych reguł modelu; nie testowano ich osobno.",
+  "Reasoning levels from provider metadata; not individually tested.": "Poziomy z metadanych dostawcy; nie testowano ich osobno.",
+  "Reasoning levels could not be detected; existing choices were kept.": "Nie wykryto poziomów; zachowano dotychczasowe wybory.",
+  "Available reasoning levels: {{levels}}": "Dostępne poziomy: {{levels}}"
 }

@@ -6406,5 +6406,13 @@
   "Reset learning text": "重置学习文字",
   "language.portuguese": "葡萄牙语",
   "language.japanese": "日语",
-  "language.turkish": "Türkçe"
+  "language.turkish": "Türkçe",
+  "Applies to the next message in this conversation.": "从当前对话的下一条消息起生效。",
+  "Enabled reasoning efforts": "启用的推理强度",
+  "Choose the reasoning levels available in Chat. Testing refreshes supported levels without replacing your choices.": "勾选 Chat 中可选择的推理强度。测试会更新支持的档位，并保留你的勾选。",
+  "No reasoning levels are known for this model. Test the model to check provider metadata.": "尚不清楚此模型支持的推理档位。请测试模型以查询提供方的能力信息。",
+  "Reasoning levels from built-in model rules; not individually tested.": "推理档位来自内置模型规则，未逐档测试。",
+  "Reasoning levels from provider metadata; not individually tested.": "推理档位来自提供方能力信息，未逐档测试。",
+  "Reasoning levels could not be detected; existing choices were kept.": "未能检测推理档位，已保留原有选择。",
+  "Available reasoning levels: {{levels}}": "可用推理档位：{{levels}}"
 }

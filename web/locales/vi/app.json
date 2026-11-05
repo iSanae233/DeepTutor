@@ -6406,5 +6406,13 @@
   "Reset learning text": "Đặt lại văn bản học tập",
   "language.portuguese": "Português",
   "language.japanese": "日本語",
-  "language.turkish": "Türkçe"
+  "language.turkish": "Türkçe",
+  "Applies to the next message in this conversation.": "Áp dụng từ tin nhắn tiếp theo trong cuộc trò chuyện này.",
+  "Enabled reasoning efforts": "Các mức suy luận đã bật",
+  "Choose the reasoning levels available in Chat. Testing refreshes supported levels without replacing your choices.": "Chọn các mức có thể dùng trong Chat. Kiểm tra cập nhật các mức được hỗ trợ mà không thay đổi lựa chọn của bạn.",
+  "No reasoning levels are known for this model. Test the model to check provider metadata.": "Chưa biết mức suy luận của mô hình này. Hãy kiểm tra mô hình để đọc siêu dữ liệu nhà cung cấp.",
+  "Reasoning levels from built-in model rules; not individually tested.": "Các mức từ quy tắc mô hình tích hợp; chưa được kiểm tra riêng.",
+  "Reasoning levels from provider metadata; not individually tested.": "Các mức từ siêu dữ liệu nhà cung cấp; chưa được kiểm tra riêng.",
+  "Reasoning levels could not be detected; existing choices were kept.": "Không phát hiện được các mức; giữ nguyên lựa chọn hiện có.",
+  "Available reasoning levels: {{levels}}": "Các mức khả dụng: {{levels}}"
 }

@@ -6406,5 +6406,13 @@
   "Learning text preview": "学習テキストのプレビュー",
   "Reset learning text": "学習テキストをリセット",
   "language.portuguese": "Português",
-  "language.turkish": "Türkçe"
+  "language.turkish": "Türkçe",
+  "Applies to the next message in this conversation.": "この会話の次のメッセージから適用されます。",
+  "Enabled reasoning efforts": "有効な推論強度",
+  "Choose the reasoning levels available in Chat. Testing refreshes supported levels without replacing your choices.": "Chat で選択できる推論強度を選びます。テストは対応レベルを更新し、選択は保持します。",
+  "No reasoning levels are known for this model. Test the model to check provider metadata.": "このモデルの推論強度は不明です。モデルをテストしてプロバイダー情報を確認してください。",
+  "Reasoning levels from built-in model rules; not individually tested.": "内蔵モデルルールによる推論強度です。各レベルは未検証です。",
+  "Reasoning levels from provider metadata; not individually tested.": "プロバイダー情報による推論強度です。各レベルは未検証です。",
+  "Reasoning levels could not be detected; existing choices were kept.": "推論強度を検出できませんでした。既存の選択を保持しました。",
+  "Available reasoning levels: {{levels}}": "利用可能な推論強度：{{levels}}"
 }

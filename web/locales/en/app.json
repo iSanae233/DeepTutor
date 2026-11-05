@@ -6406,5 +6406,13 @@
   "Reset learning text": "Reset learning text",
   "language.portuguese": "Portuguese",
   "language.japanese": "Japanese",
-  "language.turkish": "Türkçe"
+  "language.turkish": "Türkçe",
+  "Applies to the next message in this conversation.": "Applies to the next message in this conversation.",
+  "Enabled reasoning efforts": "Enabled reasoning efforts",
+  "Choose the reasoning levels available in Chat. Testing refreshes supported levels without replacing your choices.": "Choose the reasoning levels available in Chat. Testing refreshes supported levels without replacing your choices.",
+  "No reasoning levels are known for this model. Test the model to check provider metadata.": "No reasoning levels are known for this model. Test the model to check provider metadata.",
+  "Reasoning levels from built-in model rules; not individually tested.": "Reasoning levels from built-in model rules; not individually tested.",
+  "Reasoning levels from provider metadata; not individually tested.": "Reasoning levels from provider metadata; not individually tested.",
+  "Reasoning levels could not be detected; existing choices were kept.": "Reasoning levels could not be detected; existing choices were kept.",
+  "Available reasoning levels: {{levels}}": "Available reasoning levels: {{levels}}"
 }

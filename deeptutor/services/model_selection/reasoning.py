@@ -19,6 +19,8 @@ def supported_reasoning_efforts(
     """Return supported reasoning choices, preferring managed catalog metadata."""
     metadata = metadata or {}
     declared = metadata.get("codex_supported_reasoning_levels")
+    if not isinstance(declared, list):
+        declared = metadata.get("supported_reasoning_efforts")
     capabilities = metadata.get("capabilities") or {}
     provider = binding.lower().replace("-", "_")
     provider = {
@@ -115,7 +117,10 @@ def supported_reasoning_efforts(
         ):
             levels = ["minimal", "high"]
     elif provider in {"openai", "azure_openai", "openai_codex", "github_copilot"}:
-        if "gpt-5.6-sol" in name:
+        # https://developers.openai.com/api/docs/models/gpt-6.1-sol
+        if name == "gpt-6.1-sol" or name.startswith("gpt-6.1-sol-20"):
+            levels = ["low", "medium", "high", "xhigh", "max"]
+        elif "gpt-5.6-sol" in name:
             levels = ["none", "low", "medium", "high", "xhigh", "max"]
         elif "gpt-5" in name or "codex" in name:
             levels = ["minimal", "low", "medium", "high", "xhigh"]
@@ -124,3 +129,15 @@ def supported_reasoning_efforts(
     if not levels and capabilities.get("reasoning") is True:
         levels = ["none", "low", "medium", "high"]
     return levels
+
+
+def enabled_reasoning_efforts(
+    binding: str, model: str, *, metadata: dict[str, Any] | None = None
+) -> list[str]:
+    """Filter supported choices by the user's optional Chat allowlist."""
+    metadata = metadata or {}
+    supported = supported_reasoning_efforts(binding, model, metadata=metadata)
+    enabled = metadata.get("enabled_reasoning_efforts")
+    if isinstance(enabled, list):
+        return [level for level in supported if level in enabled]
+    return supported
