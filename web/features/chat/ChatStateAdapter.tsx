@@ -1861,7 +1861,14 @@ function asLLMSelection(value: unknown): LLMSelection | null {
   const modelId =
     typeof record?.model_id === "string" ? record.model_id.trim() : "";
   return profileId && modelId
-    ? { profile_id: profileId, model_id: modelId }
+    ? {
+        profile_id: profileId,
+        model_id: modelId,
+        ...(typeof record?.reasoning_effort === "string" &&
+        ["none", "minimal", "low", "medium", "high", "xhigh", "max", "adaptive"].includes(record.reasoning_effort)
+          ? { reasoning_effort: record.reasoning_effort as LLMSelection["reasoning_effort"] }
+          : {}),
+      }
     : null;
 }
 

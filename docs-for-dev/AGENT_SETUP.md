@@ -159,6 +159,19 @@ subject to the provider's supported list. Unknown fields, literal `api_key`
 fields, and credentials in URLs are rejected. Advanced settings and other
 service types remain available in Web Settings.
 
+In **Models and services → Language models**, **Enabled reasoning efforts**
+controls the levels offered by the Chat slider. **Test model** refreshes the
+supported levels in the settings draft, without replacing the user's enabled
+levels; Apply saves them. Detection prefers provider/account metadata, then
+built-in model rules. An unknown result preserves existing choices, and a
+successful connection test does not prove that every level works.
+
+The Chat slider sends an explicit level with the next message and keeps it in
+the conversation's model selection. It initially uses a supported saved model
+default, otherwise `medium` when available, otherwise the middle enabled level.
+Switching models resets the override. Legacy model defaults still apply to
+clients that omit an override; no provider credentials enter the turn payload.
+
 For knowledge bases/RAG, also configure an accessible embedding model. For example:
 
 ```json

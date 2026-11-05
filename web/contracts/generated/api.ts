@@ -14901,6 +14901,22 @@ export interface components {
       readonly model_id: string;
       /** Profile Id */
       readonly profile_id: string;
+      /**
+       * Reasoning Effort
+       * @default null
+       */
+      readonly reasoning_effort:
+        | (
+            | "none"
+            | "minimal"
+            | "low"
+            | "medium"
+            | "high"
+            | "xhigh"
+            | "max"
+            | "adaptive"
+          )
+        | null;
     };
     /**
      * LoginRequest

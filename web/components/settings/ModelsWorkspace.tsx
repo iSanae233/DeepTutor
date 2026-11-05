@@ -33,6 +33,7 @@ import { VoiceModelFields } from "./VoiceModelFields";
 import { VoicePreviewPanel } from "./VoicePreviewPanel";
 import { ServicePreviewPanel } from "./ServicePreviewPanel";
 import { ModelTestPanel } from "./ModelTestPanel";
+import { ReasoningEffortSettings } from "./ReasoningEffortSettings";
 import EmbeddingModelUsage from "./EmbeddingModelUsage";
 import {
   EditableRegistryName,
@@ -781,6 +782,15 @@ function ModelEditor({
         }
       }
       Object.assign(target, { [field]: value });
+      if (field === "enabled_reasoning_efforts" && Array.isArray(value) &&
+          target.reasoning_effort && !value.includes(target.reasoning_effort)) {
+        delete target.reasoning_effort;
+      }
+      if (field === "model" || field === "provider_ref") {
+        delete target.supported_reasoning_efforts;
+        delete target.enabled_reasoning_efforts;
+        delete target.reasoning_efforts_source;
+      }
       if (field === "name" && managed) target.user_name = String(value);
       if (field === "context_window") {
         target.context_window_source = value ? "manual" : "default";
@@ -960,7 +970,7 @@ function ModelEditor({
         {model && (service === "tts" || service === "stt") ? (
           <VoiceModelFields service={service} provider={speechProvider} model={model}
             options={speechOptions} preset={speechPreset} update={update} disabled={managed} />
-        ) : model && <ModelParameters service={service} model={model} update={update} managed={managed} />}
+        ) : model && <ModelParameters service={service} model={model} provider={speechProvider} update={update} managed={managed} />}
         {service === "tts" && model ? <VoicePreviewPanel profileId={profile.id} modelId={model.id} maxChars={Math.min(500, speechPreset?.max_input_chars ?? 500)} /> : (service === "search" || service === "stt" || service === "imagegen" || service === "videogen") ? <ServicePreviewPanel service={service} profile={profile} model={model} /> : <ModelTestPanel service={service} profile={profile} model={model} />}
         {(service === "search" || service === "imagegen" || service === "videogen") && <p className="text-[13px] leading-relaxed text-[var(--muted-foreground)]">
           {t("settings.serviceConfig.tools")} {" "}
@@ -1004,11 +1014,13 @@ function ModelEditor({
 function ModelParameters({
   service,
   model,
+  provider,
   update,
   managed,
 }: {
   service: ServiceName;
   model: CatalogModel;
+  provider: string;
   update: (field: keyof CatalogModel, value: unknown) => void;
   managed: boolean;
 }) {
@@ -1090,37 +1102,45 @@ function ModelParameters({
                 )}
               </p>
             </div>
-            <div className="space-y-1.5">
-              <p className="flex min-h-5 items-center text-[13px] font-medium">
-                {t("Reasoning effort")}
-              </p>
-              <select
-                aria-label={t("Reasoning effort")}
-                className={selectClass}
-                value={model.reasoning_effort || ""}
-                onChange={(e) => update("reasoning_effort", e.target.value)}
-              >
-                <option value="">{t("Default")}</option>
-                {[
-                  ...new Set([
-                    ...(model.codex_supported_reasoning_levels || [
-                      "none",
-                      "minimal",
-                      "low",
-                      "medium",
-                      "high",
-                      "xhigh",
-                      "max",
+            {service === "llm" ? (
+              <ReasoningEffortSettings
+                model={model}
+                provider={provider}
+                onChange={(levels) => update("enabled_reasoning_efforts", levels)}
+              />
+            ) : (
+              <div className="space-y-1.5">
+                <p className="flex min-h-5 items-center text-[13px] font-medium">
+                  {t("Reasoning effort")}
+                </p>
+                <select
+                  aria-label={t("Reasoning effort")}
+                  className={selectClass}
+                  value={model.reasoning_effort || ""}
+                  onChange={(e) => update("reasoning_effort", e.target.value)}
+                >
+                  <option value="">{t("Default")}</option>
+                  {[
+                    ...new Set([
+                      ...(model.codex_supported_reasoning_levels || [
+                        "none",
+                        "minimal",
+                        "low",
+                        "medium",
+                        "high",
+                        "xhigh",
+                        "max",
+                      ]),
+                      ...(model.reasoning_effort ? [model.reasoning_effort] : []),
                     ]),
-                    ...(model.reasoning_effort ? [model.reasoning_effort] : []),
-                  ]),
-                ].map((v) => (
-                  <option key={v} value={v}>
-                    {v}
-                  </option>
-                ))}
-              </select>
-            </div>
+                  ].map((v) => (
+                    <option key={v} value={v}>
+                      {v}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
           </div>
           <details className={`p-3.5 ${subPanelClass}`}>
             <summary className="cursor-pointer select-none rounded text-[13px] font-medium marker:text-[var(--muted-foreground)]">

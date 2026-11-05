@@ -95,6 +95,8 @@ def personal_llm_rows() -> list[dict[str, Any]]:
     user's own sign-in rather than an administrator's grant, so it can offer
     them a connect/disconnect card instead of a read-only assignment.
     """
+    from deeptutor.services.model_selection.reasoning import enabled_reasoning_efforts
+
     rows: list[dict[str, Any]] = []
     for profile in _personal_catalog_profiles():
         profile_id = str(profile.get("id") or "")
@@ -112,7 +114,9 @@ def personal_llm_rows() -> list[dict[str, Any]]:
                     "model": model.get("model") or "",
                     "provider": profile.get("binding") or "",
                     "reasoning_effort": model.get("reasoning_effort"),
-                    "supported_reasoning_efforts": model.get("codex_supported_reasoning_levels"),
+                    "supported_reasoning_efforts": enabled_reasoning_efforts(
+                        profile.get("binding") or "", model.get("model") or "", metadata=model
+                    ),
                     **{
                         f"declared_{key}": value
                         for key, value in (model.get("capabilities") or {}).items()
